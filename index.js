@@ -1,6 +1,8 @@
-// Here I am importing the prompt functions from a separate members file,
+// Here I am importing the prompt functions from a separate employees file,
 // so that I can keep the code orderly and avoid bloated code.
-const { promptEngineer, promptIntern } = require('./members');
+const { promptEngineer, promptIntern } = require('./employees');
+const { writeFile, copyFile } = require('./utils/generate-site.js');
+const generatePage = require('./src/page-template');
 const inquirer = require('inquirer');
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
@@ -67,11 +69,11 @@ const promptTeam = teamData => {
   ==============================
     `);
 
-    // If there's no 'members' array property, create one
-    if (!teamData.members) {
-        teamData.members = [];
+    // If there's no 'employees' array property, create one
+    if (!teamData.employees) {
+        teamData.employees = [];
     }
-
+    
     var wantsEngineer = false;
 
     return inquirer.prompt([
@@ -94,16 +96,16 @@ const promptTeam = teamData => {
         .then(employee => {
             if (wantsEngineer) {
                 console.log('You added an engineer.');
-                const {name, email, id, github, confirmAddAnother} = employee;
+                const { name, email, id, github, confirmAddAnother } = employee;
                 const engineer = new Engineer(name, email, id, github);
-                teamData.members.push(engineer);
+                teamData.employees.push(engineer);
                 return confirmAddAnother;
             }
             else {
-                console.log('You added an intern.') 
-                const {name, email, id, school, confirmAddAnother} = employee;
+                console.log('You added an intern.')
+                const { name, email, id, school, confirmAddAnother } = employee;
                 const intern = new Intern(name, email, id, school);
-                teamData.members.push(intern);
+                teamData.employees.push(intern);
                 return confirmAddAnother;
             }
         })
@@ -121,6 +123,18 @@ const promptTeam = teamData => {
 promptManager()
     .then(promptTeam)
     .then(teamProfile => {
-        console.log('Here is your team profile!');
-        console.log(teamProfile);
+        return generatePage(teamProfile);
     })
+    .then(pageHTML => {
+        return writeFile(pageHTML);
+    })
+    .then(writeFileResponse => {
+        console.log(writeFileResponse);
+        return copyFile();
+    })
+    .then(copyFileResponse => {
+        console.log(copyFileResponse);
+    })
+    .catch(err => {
+        console.log(err);
+    });
