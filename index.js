@@ -95,16 +95,16 @@ const promptTeam = teamData => {
         })
         .then(employee => {
             if (wantsEngineer) {
-                console.log('You added an engineer.');
                 const { name, email, id, github, confirmAddAnother } = employee;
                 const engineer = new Engineer(name, email, id, github);
+                console.log(name + ' has been added as an engineer.');
                 teamData.employees.push(engineer);
                 return confirmAddAnother;
             }
             else {
-                console.log('You added an intern.')
                 const { name, email, id, school, confirmAddAnother } = employee;
                 const intern = new Intern(name, email, id, school);
+                console.log(name + ' has been added as an intern.')
                 teamData.employees.push(intern);
                 return confirmAddAnother;
             }
@@ -129,6 +129,9 @@ promptManager()
         return writeFile(pageHTML);
     })
     .then(writeFileResponse => {
+        console.log(`
+        ==============================
+          `);
         console.log(writeFileResponse);
         return copyFile();
     })

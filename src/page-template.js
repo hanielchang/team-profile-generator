@@ -1,32 +1,46 @@
 const Manager = require("../lib/Manager");
 const generateProfile = employeesArray => {
 
-    const newEmployeesArray = employeesArray.map(({ name, email, id, unknown}) => {
-        var github = ``;
-        var school = ``;
+    const newEmployeesArray = employeesArray.map(employeeObj => {
+        var role = employeeObj.getRole();
 
-        if (unknown === 'github') {
-            github = `<a href="${unknown}" class="btn mt-auto"><i class="fab fa-github mr-2"></i>${unknown}</a>`
+        if (role === 'Engineer') {
+            return `
+            <div class="col-12 col-md-6 mb-2 bg-dark text-light p-3 flex-column">
+              <h3 class="portfolio-item-title text-light">${employeeObj.getName()}</h3>
+              <h5 class="portfolio-languages">
+                ${employeeObj.getRole()}
+              </h5>
+              <h5 class="portfolio-languages">
+                ID number: ${employeeObj.getId()}
+              </h5>
+              <a href="https://github.com/${employeeObj.getGithub()}" target="_blank" class="btn mt-auto"><i class="fab fa-github mr-2"></i>Github Profile</a>
+              <a href="mailto:${employeeObj.getEmail()}" class="btn2 mt-auto">${employeeObj.getEmail()}</a>
+            </div>
+          `;
         }
         else {
-
+            return `
+            <div class="col-12 col-md-6 mb-2 bg-dark text-light p-3 flex-column">
+              <h3 class="portfolio-item-title text-light">${employeeObj.getName()}</h3>
+              <h5 class="portfolio-languages">
+                ${employeeObj.getRole()}
+              </h5>
+              <h5 class="portfolio-languages">
+                ID number: ${employeeObj.getId()}
+              </h5>
+              <h5 class="portfolio-languages">
+              School: ${employeeObj.getSchool()}
+              </h5>
+              <a href="mailto:${employeeObj.getEmail()}" class="btn2 mt-auto">${employeeObj.getEmail()}</a>
+            </div>
+          `;
         }
-        
-        
-        return `
-          <div class="col-12 col-md-6 mb-2 bg-dark text-light p-3 flex-column">
-            <h3 class="portfolio-item-title text-light">${name}</h3>
-            <h5 class="portfolio-languages">
-              ID number: ${id}
-            </h5>
-            <a href="${email}" class="btn mt-auto"><i class="fab fa-github mr-2"></i>${email}</a>
-          </div>
-        `;
     });
 
     return `
       <section class="my-3" id="portfolio">
-        <h2 class="text-dark bg-primary p-2 display-inline-block">Work</h2>
+        <h2 class="text-dark bg-primary p-2 display-inline-block">Employees</h2>
         <div class="flex-row justify-space-between">
         ${newEmployeesArray.join('')}
         </div>
@@ -40,14 +54,6 @@ module.exports = templateData => {
 
     // this will create three variables based on data in templateData
     const { name, email, id, office, employees } = templateData;
-    console.log('Here is your team profile destructured');
-    console.log(name);
-    console.log(email);
-    console.log(id);
-    console.log(office);
-    console.log(employees);
-    console.log(typeof(employees));
-
     const manager = new Manager(name, email, id, office);
 
     var ManagerHTML = `
@@ -59,7 +65,7 @@ module.exports = templateData => {
       <h5 class="portfolio-languages">
         ID number: ${manager.getId()}
       </h5>
-      <a href="${manager.getEmail()}" class="btn mt-auto"><i class="fab fa-github mr-2"></i>${manager.getEmail()}</a>
+      <a href="mailto:${manager.getEmail()}" class="btn2 mt-auto"></i>${manager.getEmail()}</a>
       <h5 class="portfolio-languages">
         Office number: ${manager.officeNumber}
       </h5>

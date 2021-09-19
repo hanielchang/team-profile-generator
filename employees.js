@@ -31,7 +31,7 @@ const promptEngineer = () => {
         {
             type: 'input',
             name: 'id',
-            message: "Enter Engingeer's ID number.",
+            message: "Enter Engineer's ID number.",
             validate: nameInput => {
                 if (nameInput) {
                     return true;
@@ -44,7 +44,7 @@ const promptEngineer = () => {
         {
             type: 'input',
             name: 'github',
-            message: "Enter Engingeer's github username.",
+            message: "Enter Engineer's github username.",
             validate: nameInput => {
                 if (nameInput) {
                     return true;
