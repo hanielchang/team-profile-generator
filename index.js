@@ -1,12 +1,15 @@
-// Here I am importing the prompt functions from a separate employees file,
-// so that I can keep the code orderly and avoid bloated code.
+// Here I am importing the prompt functions from a separate employees.js file,
+// along with a write function to write the index.html file, as well
+// a copy function to copy the style.css sheet to the 'dist' folder
 const { promptEngineer, promptIntern } = require('./employees');
 const { writeFile, copyFile } = require('./utils/generate-site.js');
+
 const generatePage = require('./src/page-template');
 const inquirer = require('inquirer');
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 
+// Prompt for manager's info
 const promptManager = () => {
     return inquirer.prompt([
         {
@@ -64,6 +67,8 @@ const promptManager = () => {
     ]);
 };
 
+// Here, the method promptTeam attaches an array of objects called employees
+// to the parameter teamData, right alongside the Manager's info.
 const promptTeam = teamData => {
     console.log(`
   ==============================
@@ -74,6 +79,8 @@ const promptTeam = teamData => {
         teamData.employees = [];
     }
     
+    // This variable is set a default value of false. It is changed to true
+    // when the user enters the option for adding an engineer.
     var wantsEngineer = false;
 
     return inquirer.prompt([
@@ -109,6 +116,8 @@ const promptTeam = teamData => {
                 return confirmAddAnother;
             }
         })
+        // if user wants to add another employee, then we do a recursive call, otherwise return 
+        // the teamData, which is the profile to be generated on the HTML file. 
         .then(wantsAnother => {
             if (wantsAnother) {
                 return promptTeam(teamData);
@@ -119,6 +128,10 @@ const promptTeam = teamData => {
         })
 };
 
+// This chain of promises can be summarized as follows: First prompt for manager info. Then, prompt for 
+// team members. After the team profile has been completed, pass it on to the pageHTML parameter and
+// write the info to an HTML template. Then, call the copy function to copy the style.css sheet into
+// the 'dist' folder, where it will attach with the HTML file. The final promise is a catch method for errors.
 
 promptManager()
     .then(promptTeam)

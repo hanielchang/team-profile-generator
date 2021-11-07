@@ -1,3 +1,6 @@
+// This file was created to keep the main index.js file more organized
+// and to avoid cluttering. It contains the promptEngineer and 
+// promptIntern methods which are exported to index.js
 const inquirer = require('inquirer');
 
 const promptEngineer = () => {

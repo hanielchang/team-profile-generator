@@ -5,6 +5,7 @@ const generateProfile = employeesArray => {
         var role = employeeObj.getRole();
 
         if (role === 'Engineer') {
+            // Engineer template
             return `
             <div class="col-12 col-md-6 mb-2 bg-dark text-light p-3 flex-column">
               <h3 class="portfolio-item-title text-light">${employeeObj.getName()}</h3>
@@ -20,6 +21,7 @@ const generateProfile = employeesArray => {
           `;
         }
         else {
+            // Intern template
             return `
             <div class="col-12 col-md-6 mb-2 bg-dark text-light p-3 flex-column">
               <h3 class="portfolio-item-title text-light">${employeeObj.getName()}</h3>
@@ -52,10 +54,12 @@ const generateProfile = employeesArray => {
 
 module.exports = templateData => {
 
-    // this will create three variables based on data in templateData
-    const { name, email, id, office, employees } = templateData;
-    const manager = new Manager(name, email, id, office);
+    // Here, the name, email, id, and officeNum are properties of the manager. The rest of
+    // the employees are stored as objects in the 'employees' array.
+    const { name, email, id, officeNum, employees } = templateData;
+    const manager = new Manager(name, email, id, officeNum);
 
+    // This is the HTML for manager info, which is to be appended to the main body code below.
     var ManagerHTML = `
     <div class="col-12 col-md-6 mb-2 bg-dark text-light p-3 flex-column">
       <h3 class="portfolio-item-title text-light">${manager.getName()}</h3>
@@ -67,12 +71,12 @@ module.exports = templateData => {
       </h5>
       <a href="mailto:${manager.getEmail()}" class="btn2 mt-auto"></i>${manager.getEmail()}</a>
       <h5 class="portfolio-languages">
-        Office number: ${manager.officeNumber}
+        Office number: ${manager.getOfficeNum()}
       </h5>
     </div>
   `;
 
-
+    // Main template
     return `
     <!DOCTYPE html>
     <html lang="en">
